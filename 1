@@ -1,0 +1,165 @@
+var express = require('express');
+var bodyParser = require('body-parser');
+var MongoClient = require('mongodb').MongoClient;
+var mongodb = require("mongodb");
+var ObjectId = require('mongodb').ObjectId;
+
+var url = 'mongodb://admin:Password123@ds139942.mlab.com:39942/reportsdb';
+var app = express();
+app.use(bodyParser.json());
+var db;
+
+var COLLECTION = 'reportsdb';
+
+function handleError(res, reason, message, code) {
+console.log("ERROR: " + reason);
+res.status(code || 500).json({"error": message});
+}
+
+/* "/"
+ * GET: to ensure that landing page is working
+ */
+
+app.get('/', function (req, res) {
+  res.status(200).send('Working!')
+})
+
+/* "api/reports"
+ * GET: find all reports
+ * POST: creates a new report
+ */
+
+//PLACEHOLDER FUNCTION TO FIND ALL REPORTS
+app.get('/api/reports', function(req, res) {
+
+res.setHeader('Access-Control-Allow-Origin', '*');
+res.setHeader('Access-Control-Allow-Methods', 'GET');
+
+  db.collection(COLLECTION).find({}).toArray(function(err, docs) {
+    if (err) {
+     handleError(res, err.message, "Failed to get reports.");
+    }else{
+     res.status(200).json(docs);
+    }
+  });
+});
+
+//PLACEHOLDER FUNCTION TO FIND ALL REPORTS AND RETURN DOCIDS
+app.get('/api/reports_docids', function(req, res) {
+
+res.setHeader('Access-Control-Allow-Origin', '*');
+res.setHeader('Access-Control-Allow-Methods', 'GET');
+
+  db.collection(COLLECTION).find({}, {"docid": true}, {"limit": 100 }).toArray(function(err, docs) {
+    if (err) {
+     handleError(res, err.message, "Failed to get reports.");
+    }else{
+     res.status(200).json(docs);
+    }
+  });
+});
+
+//PLACEHOLDER FUNCTION TO CREATE A NEW REPORT
+app.post('/api/reports', function(req, res) {
+
+res.setHeader('Access-Control-Allow-Origin', '*');
+res.setHeader('Access-Control-Allow-Methods', 'GET');
+
+ var newReport = req.body;
+ 
+ if (!req.body.title) {
+ handleError(res, "Invalid report input", "Must provide title and report content.", 400);
+ }
+
+ db.collection(COLLECTION).insertOne(newReport, function(err, doc) {
+    if (err) {
+     handleError(res, err.message, "Failed to create new report.");
+     return res.send();
+     } else{
+     console.log(newReport);
+     res.status(201).json(doc);
+    }
+ });
+});
+
+/* "/api/reports/:id"
+ * GET: find report by id
+ * PUT: update report by id
+ * DELETE: deletes report by id
+ */
+/*
+ db.collection(COLLECTION).findOne({ 'docid': new ObjectId(req.params.id) }, fu
+*/
+
+//PLACEHOLDER FUNCTION TO FIND 1 REPORT
+app.get('/api/reports/:id', function(req, res) {
+
+res.setHeader('Access-Control-Allow-Origin', '*');
+res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT, PATCH, DELETE');
+
+  db.collection(COLLECTION).findOne({ 'docid': req.params.id }, function(err,doc) {
+    if (err) {
+     handleError(res, err.message, "Failed to get report.");
+    }else{
+     //console.log(req.params.id);
+     res.status(200).json(doc);
+    }
+ });
+});
+
+//PLACEHOLDER FUNCTION TO UPDATE 1 REPORT
+app.put('/api/reports/:id', function(req, res) {
+
+res.setHeader('Access-Control-Allow-Origin', '*');
+res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT, PATCH, DELETE');
+
+ var updateReport = req.body;
+// delete updateReport._id;
+ db.collection(COLLECTION).updateOne({'docid': req.params.id}, { $set: updateReport} , function(err,doc) {
+    if (err) {
+     handleError(res, err.message, "Failed to update report.");
+    } else{
+//   updateReport._id = req.params.id;
+     res.status(200).json(updateReport);
+    }
+ });
+});
+
+//PLACEHOLDER FUNCTION TO DELETE 1 REPORT
+app.delete('/api/reports/:id', function(req, res) {
+
+res.setHeader('Access-Control-Allow-Origin', '*');
+res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT, PATCH, DELETE');
+
+ db.collection(COLLECTION).deleteOne({'docid': req.params.id}, function(err,result) {
+    if (err) {
+     handleError(res, err.message, "Failed to delete report.");
+    } else{
+     res.status(200).json(req.params.id);
+    }
+ });
+});
+
+//PLACEHOLDER FUNCTION TO FIND ALL REPORTS
+app.get('/api/test', function(req, res) {
+res.status(200).json("Testing GET & POST methods"); 
+// db.collection(COLLECTION).find({}).toArray(function(err, docs) {
+   // if (err) {
+   //  handleError(res, err.message, "Failed to get reports.");
+   // }else{
+   //  res.status(200).json(docs);
+   // }
+  //});
+});
+
+
+//PLACEHOLDER FOR CONNECTING TO DATABASE & APP SERVER
+MongoClient.connect(url, function(err, dbConnection) {
+  db = dbConnection;
+  console.log("Database connection ready");
+
+  var server = app.listen(8001, function() {
+	  var port = server.address().port;
+	  console.log("Started server at port", port);
+  });
+});

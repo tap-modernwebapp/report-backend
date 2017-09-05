@@ -1,0 +1,9 @@
+POST
+curl -H "Content-Type: application/json" -X POST -d '{"body":"Report Body here", "docid": "999999", "title":"test title", "entities":""}' http://35.198.208.48:8001/api/reports/
+
+DELETE
+curl -i -X DELETE http://35.198.208.48:8001/api/reports/999999
+
+PUT
+curl -i -X PUT -H 'Content-Type: application/json' -d '{"body": "updated body here", "title": "updated title here", "source": "updated source here", "date": "12/08/2017"}' http://192.168.111.129:8001/api/reports/0000008
+
