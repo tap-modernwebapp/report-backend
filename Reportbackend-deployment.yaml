@@ -1,0 +1,19 @@
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: reportbackend-deployment
+spec:
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        type: reportbackend
+    spec:
+      containers:
+      - name: reportbackend-container
+        image: gcr.io/burnished-mark-168007/reportbackend
+        imagePullPolicy: Always
+        ports:
+        - containerPort: 8001
+          name: first-port
+          protocol: TCP
