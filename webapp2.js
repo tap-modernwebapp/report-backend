@@ -25,7 +25,6 @@ var Report = require('./models/report');
 var COLLECTION = 'reportsdb';
 
 function convertToEpoch(datetime){
-process.env.TZ = 'GMT-8';
 var dateTaken = new Date(datetime);
 var myEpochDate = dateTaken.getTime()/1000.0;
 
@@ -33,9 +32,9 @@ return myEpochDate;
 }
 
 function convertToDate(datetime){
-process.env.TZ = 'GMT-8';
 var dateConverted = new Date(datetime * 1000);
 var newDate = dateConverted.getDate() + '/' + (dateConverted.getMonth() + 1) + '/' + dateConverted.getFullYear();
+//console.log("date converted back is " + newDate);
 
 return newDate;
 }
@@ -135,10 +134,8 @@ newReport.save(function(err) {
 function convertManager(reports) {
 //console.log(reports);
 var temp = reports[0].captureDatetime;
-if (temp) {
 reports[0].captureDatetime = convertToDate(temp);
 return reports;
-}
 }
 
 //PLACEHOLDER FUNCTION TO GET 1 REPORT
