@@ -51,7 +51,7 @@ res.status(code || 500).json({"error": message});
  */
 
 app.get('/', function (req, res) {
-  res.status(200).send('Working!')
+  res.status(200).send('Report Backend is Working!')
 })
 
 /* "api/reports"

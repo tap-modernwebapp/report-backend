@@ -1,0 +1,14 @@
+reportbackend-deployment
+
+apiVersion: extensions/v1beta1
+kind: Service
+metadata:
+  name: reportbackend-deployment
+  labels:
+    type: reportbackend
+spec:
+  ports:
+    # the port that this service should serve on
+  - port: 8001
+  selector:
+    type: reportbackend
