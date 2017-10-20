@@ -108,7 +108,7 @@ var myEpochDate = convertToEpoch(req.body.captureDatetime);
 
 var newReport = Report({
   title: req.body.title,
-  body: req.body.body,
+  content: req.body.content,
   docid: req.body.docid,
   source: req.body.source,
   captureDatetime: myEpochDate
@@ -169,7 +169,7 @@ res.setHeader("Accept", "application/json");
 res.setHeader("Content-Type", "application/json");
 
 var query   = { 'docid': req.params.id }; 
-var update  = { title: req.body.title, body: req.body.body, source: req.body.source, captureDatetime: convertToEpoch(req.body.captureDatetime) }; 
+var update  = { title: req.body.title, content: req.body.content, source: req.body.source, captureDatetime: convertToEpoch(req.body.captureDatetime) }; 
 
 Report.findOneAndUpdate(query, update, function(err, report){ 
  if (err) {

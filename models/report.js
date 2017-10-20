@@ -4,7 +4,7 @@ var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
 
 var ReportSchema = new Schema({
-    body: { type: String },
+    content: { type: String },
     title: { type: String },
     source: { type: String },
     captureDatetime: { type: String },
