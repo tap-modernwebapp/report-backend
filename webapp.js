@@ -4,18 +4,25 @@ var MongoClient = require('mongodb').MongoClient;
 var mongodb = require("mongodb");
 var ObjectId = require('mongodb').ObjectId;
 var cors = require('cors');
+const cookieParser = require('cookie-parser');
 
 var url = 'mongodb://admin:Password123@ds139942.mlab.com:39942/reportsdb';
 var app = express();
+var VerifyToken = require('./auth/VerifyToken');
 
-app.all('*', function(req, res, next) {
-  res.header("Access-Control-Allow-Origin", "*");
-  res.header("Access-Control-Allow-Methods", "PUT, GET, POST, DELETE, OPTIONS");
-  res.header("Access-Control-Allow-Headers", "Content-Type");
-  next();
-});
+var whitelist = ['http://localhost:8080', 'http://35.197.155.91:8080'];
+var corsOptions = {
+  origin: function (origin, callback) {
+    if (whitelist.indexOf(origin) !== -1) {
+      callback(null, true)
+    } else {
+      callback(new Error('Not allowed by CORS'))
+    }
+  }, credentials: true
+}
 
-app.options('*', cors()); 
+app.use(cors(corsOptions));
+app.use(cookieParser());
 app.use(bodyParser.json());
 
 var db;
@@ -61,8 +68,6 @@ app.get('/', function (req, res) {
 
 //PLACEHOLDER FUNCTION TO FIND ALL REPORTS
 app.get('/api/reports', function(req, res) {
-
-res.setHeader('Access-Control-Allow-Origin', '*');
 res.setHeader('Access-Control-Allow-Methods', 'GET');
 
 var query;
@@ -79,8 +84,6 @@ query.exec(function (err, reports) {
 
 //PLACEHOLDER FUNCTION TO FIND ALL REPORTS AND RETURN DOCIDS
 app.get('/api/reports_docids', function(req, res) {
-
-res.setHeader('Access-Control-Allow-Origin', '*');
 res.setHeader('Access-Control-Allow-Methods', 'GET');
 
 var query;
@@ -97,9 +100,7 @@ query.exec(function (err, reports) {
 });
 
 //PLACEHOLDER FUNCTION TO CREATE A NEW REPORT
-app.post('/api/reports', function(req, res) {
-
-res.setHeader("Access-Control-Allow-Origin", "*");
+app.post('/api/reports', VerifyToken, function(req, res) {
 res.setHeader("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS");
 res.setHeader("Accept", "application/json");
 res.setHeader("Content-Type", "application/json");
@@ -142,9 +143,7 @@ return reports;
 }
 
 //PLACEHOLDER FUNCTION TO GET 1 REPORT
-app.get('/api/reports/:id', function(req, res) {
-
-res.setHeader('Access-Control-Allow-Origin', '*');
+app.get('/api/reports/:id', VerifyToken, function(req, res) {
 res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT, PATCH, DELETE');
 
 var query;
@@ -161,9 +160,7 @@ query.exec(function (err, reports) {
 });
 
 //PLACEHOLDER FUNCTION TO UPDATE 1 REPORT
-app.put('/api/reports/:id', function(req, res) {
-
-res.setHeader("Access-Control-Allow-Origin", "*");
+app.put('/api/reports/:id', VerifyToken, function(req, res) {
 res.setHeader("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE");
 res.setHeader("Accept", "application/json");
 res.setHeader("Content-Type", "application/json");
@@ -181,9 +178,7 @@ Report.findOneAndUpdate(query, update, function(err, report){
 });
 
 //PLACEHOLDER FUNCTION TO DELETE 1 REPORT
-app.delete('/api/reports/:id', function(req, res) {
-
-res.setHeader('Access-Control-Allow-Origin', '*');
+app.delete('/api/reports/:id', VerifyToken, function(req, res) {
 res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT, PATCH, DELETE');
 
 Report.findOneAndRemove({ 'docid' : req.params.id }, function(err) {
@@ -196,7 +191,7 @@ Report.findOneAndRemove({ 'docid' : req.params.id }, function(err) {
 });
 
 //PLACEHOLDER FUNCTION TO FIND ALL REPORTS
-app.get('/api/test', function(req, res) {
+app.get('/api/test', VerifyToken, function(req, res) {
 res.status(200).json("Testing GET & POST methods"); 
 });
 
