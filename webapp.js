@@ -10,7 +10,7 @@ var url = 'mongodb://admin:Password123@ds139942.mlab.com:39942/reportsdb';
 var app = express();
 var VerifyToken = require('./auth/VerifyToken');
 
-var whitelist = ['http://localhost:8080', 'http://35.197.155.91:8080'];
+var whitelist = ['http://localhost:8080', 'http://35.197.155.91:8080', 'http://107.178.254.205'];
 var corsOptions = {
   origin: function (origin, callback) {
     if (whitelist.indexOf(origin) !== -1) {

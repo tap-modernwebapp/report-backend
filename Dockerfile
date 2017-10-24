@@ -1,9 +1,11 @@
 FROM node
 
-ADD . /app
+ADD ./package.json /app/package.json
 
 RUN cd /app; \
 npm install --production
+
+ADD . /app
 
 EXPOSE 8001
 
