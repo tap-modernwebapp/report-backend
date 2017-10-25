@@ -154,7 +154,12 @@ query.exec(function (err, reports) {
     handleError(res, err.message, "Failed to get reports.");
     }else{
 //     res.status(200).json(reports);
+	if (reports.length != 0) {
        res.status(200).json(convertManager(reports));
+	}
+	else {
+       handleError(res, err.message, "Failed to get report.");
+	}
     }
   });
 });
