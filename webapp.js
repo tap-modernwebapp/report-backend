@@ -200,6 +200,135 @@ app.get('/api/test', VerifyToken, function(req, res) {
 res.status(200).json("Testing GET & POST methods"); 
 });
 
+app.get('/api/collab/cloud', function(req, res) {
+res.status(200).json({
+  "cluster": [
+     {
+       "label":"D1",
+       "terms": [
+         "w1",
+         "w2",
+         "w3",
+         "w4",
+         "w5"
+       ],
+       "weight":0.8
+     },
+       {
+       "label":"D2",
+       "terms": [
+         "w6",
+         "w7",
+         "w8",
+         "w9",
+         "w10"
+       ],
+       "weight":0.2
+     },
+       {
+       "label":"D3",
+       "terms": [
+         "w11",
+         "w12",
+         "w13",
+         "w14",
+         "w15"
+       ],
+       "weight":0.7
+     }
+  ]
+ }
+ ); 
+});
+
+app.get('/api/collab/test4', function(req, res) {
+res.status(200).json({
+  "topic": [
+     {
+       "label":"D1",
+       "terms": [
+         "w1",
+         "w2",
+         "w3",
+         "w4",
+         "w5",
+         "w6",
+         "w7",
+         "w8",
+         "w9",
+         "w10",
+         "w11",
+         "w12",
+         "w13",
+         "w14",
+         "w15",
+         "w16",
+         "w17",
+         "w18",
+         "w19",
+         "w20"
+       ],
+       "docs": [
+         "Doc2321",
+         "Doc2",
+         "Doc3",
+         "Doc4",
+         "Doc5",
+         "Doc6",
+         "Doc7",
+         "Doc8",
+         "Doc9",
+         "Doc10"
+       ],
+       "titles": [
+         "Title1",
+         "Title2",
+         "Title3",
+         "Title4",
+         "Title5",
+         "Title6",
+         "Title7",
+         "Title8",
+         "Title9",
+         "Title10"
+       ]
+     }
+  ]
+ }); 
+});
+
+
+app.get('/api/collab/trend', function(req, res) {
+res.status(200).json([{
+  "Agg":"Agg_Term1",
+  "Week1Date": "wk1_Term1",
+  "Week2Date": "wk2_Term1",
+  "Week3Date": "wk3_Term1",
+  "Week4Date": "wk4_Term1"
+},
+{
+  "Agg":"Agg_Term2",
+  "Week1Date": "wk1_Term2",
+  "Week2Date": "wk2_Term2",
+  "Week3Date": "wk3_Term2",
+  "Week4Date": "wk4_Term2"
+},
+{
+  "Agg":"Agg_Term3",
+  "Week1Date": "wk1_Term3",
+  "Week2Date": "wk2_Term3",
+  "Week3Date": "wk3_Term3",
+  "Week4Date": "wk4_Term3"
+},
+{
+  "Week1Date": "wk1_Term4",
+  "Week2Date": "wk2_Term4",
+  "Week3Date": "wk3_Term4",
+  "Week4Date": "wk4_Term4"
+}]); 
+});
+    
+
 //PLACEHOLDER FOR CONNECTING TO DATABASE & APP SERVER
 var server = app.listen(8001, function() {
 var port = server.address().port;
